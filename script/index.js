@@ -15,7 +15,9 @@ const displayLessons = (lessons) => {
     //3. create a div
     const levelDiv = document.createElement("div");
     levelDiv.innerHTML = `
-          <button onclick="loadWords(${lesson.level_no})" href="" class="btn btn-outline btn-primary">
+          <button id="lesson-btn-${lesson.level_no}"
+           onclick="loadWords(${lesson.level_no})" href="" 
+           class="btn btn-outline btn-primary lesson-btn">
                 <i class="fa-solid fa-book"></i>
                 Lesson - ${lesson.level_no}
                 </button>
@@ -27,11 +29,17 @@ const displayLessons = (lessons) => {
 
 const loadWords = (id) => {
   // console.log(id)
+   removeActive();
   const url = `https://openapi.programming-hero.com/api/level/${id}`;
   // console.log(url);
   fetch(url)
     .then((res) => res.json())
-    .then((json) => displayLevelWords(json.data));
+    .then((json) =>{ 
+      const clickBtn = document.getElementById(`lesson-btn-${id}`)
+      // console.log(clickBtn)
+      clickBtn.classList.add("active");
+      displayLevelWords(json.data)
+    });
 };
 const displayLevelWords = (words) => {
   // console.log(words);
@@ -62,9 +70,9 @@ const displayLevelWords = (words) => {
            <div
         class="bg-white p-5 rounded-lg shadow-xl text-center py-10 px-5 space-y-4"
       >
-        <h2 class="text-2xl font-bold">${word.word}</h2>
+        <h2 class="text-2xl font-bold">${word.word ? word.word : "শব্দ পাওয়া যায়নি"}</h2>
         <p class="font-semibold">Meaning /Pronounciation</p>
-        <div class="text-2xl font-medium bangla-font">${word.meaning} / ${word.pronunciation}</div>
+        <div class="text-2xl font-medium bangla-font">"${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি"} / ${word.pronunciation ? word.pronunciation : "উচ্চারণ পাওয়া যায়নি"}"</div>
         <div class="flex items-center justify-between">
           <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF70]">
             <i class="fa-solid fa-circle-info"></i>
@@ -79,5 +87,10 @@ const displayLevelWords = (words) => {
     wordContainer.appendChild(wordDiv);
   }
 };
+const removeActive=()=>{
+  const lessonsButtons = document.querySelectorAll(".lesson-btn");
+  // console.log(lessonsButtons);
+  lessonsButtons.forEach(btn=>btn.classList.remove("active"));
+}
 
 loadLessons();
