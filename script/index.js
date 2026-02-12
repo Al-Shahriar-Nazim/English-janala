@@ -1,3 +1,10 @@
+const createElement =(arr)=>{
+    // console.log(arr)
+    // [ 'hamim', 'sofik', 'kamal' ]
+    const htmlElement = arr.map(el => `<span class="btn">${el}</span>`)
+    return(htmlElement.join(" "))
+}
+
 const loadLessons = () => {
   fetch("https://openapi.programming-hero.com/api/levels/all")
     .then((res) => res.json())
@@ -29,16 +36,16 @@ const displayLessons = (lessons) => {
 
 const loadWords = (id) => {
   // console.log(id)
-   removeActive();
+  removeActive();
   const url = `https://openapi.programming-hero.com/api/level/${id}`;
   // console.log(url);
   fetch(url)
     .then((res) => res.json())
-    .then((json) =>{ 
-      const clickBtn = document.getElementById(`lesson-btn-${id}`)
+    .then((json) => {
+      const clickBtn = document.getElementById(`lesson-btn-${id}`);
       // console.log(clickBtn)
       clickBtn.classList.add("active");
-      displayLevelWords(json.data)
+      displayLevelWords(json.data);
     });
 };
 const displayLevelWords = (words) => {
@@ -74,7 +81,9 @@ const displayLevelWords = (words) => {
         <p class="font-semibold">Meaning /Pronounciation</p>
         <div class="text-2xl font-medium bangla-font">"${word.meaning ? word.meaning : "অর্থ পাওয়া যায়নি"} / ${word.pronunciation ? word.pronunciation : "উচ্চারণ পাওয়া যায়নি"}"</div>
         <div class="flex items-center justify-between">
-          <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF70]">
+          <button 
+            onclick="loadWordDetails(${word.id})"
+             class="btn bg-[#1A91FF10] hover:bg-[#1A91FF70]">
             <i class="fa-solid fa-circle-info"></i>
           </button>
           <button class="btn bg-[#1A91FF10] hover:bg-[#1A91FF80]">
@@ -87,10 +96,46 @@ const displayLevelWords = (words) => {
     wordContainer.appendChild(wordDiv);
   }
 };
-const removeActive=()=>{
+const removeActive = () => {
   const lessonsButtons = document.querySelectorAll(".lesson-btn");
   // console.log(lessonsButtons);
-  lessonsButtons.forEach(btn=>btn.classList.remove("active"));
-}
+  lessonsButtons.forEach((btn) => btn.classList.remove("active"));
+};
 
+const loadWordDetails = (id) => {
+  const url = `https://openapi.programming-hero.com/api/word/${id}`;
+  // console.log(url)
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => displayWordDetails(data.data));
+};
+
+const displayWordDetails = (word) => {
+  // console.log(word)
+  const detailsBox = document.getElementById("details-container");
+  // console.log(detailsBox)
+  // detailsBox.innerHTML="hello i am form js";
+  detailsBox.innerHTML = `
+  <div class="">
+            <h2 class="text-2xl font-bold">
+              ${word.word}( <i class="fa-regular fa-microphone"></i> :${word.pronunciation})
+            </h2>
+          </div>
+          <div class="">
+            <h2 class="font-bold">Meaning</h2>
+            <p>${word.meaning}</p>
+          </div>
+          <div class="">
+            <h2 class="font-bold">Example</h2>
+            <p>${word.sentence}</p>
+          </div>
+          <div class="">
+            <h2 class="font-bold">সমার্থক শব্দ গুলো</h2>
+          <div>
+          ${createElement(word.synonyms)}
+          </div>
+          </div>
+  `;
+  document.getElementById("word_model").showModal();
+};
 loadLessons();
