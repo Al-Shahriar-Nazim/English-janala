@@ -135,17 +135,27 @@
         class="flex flex-wrap justify-center gap-5 mb-5"
       ></div>
     </section>
-
-<section id="spinner" class="flex justify-center items-center py-10 hidden">
-<span class="loading loading-bars loading-xl"></span>
-</section>
+    <!-- search section start -->
+    <section class="flex justify-center items-center py-10">
+      <div class="join">
+        <div>
+          <label class="input validator join-item">
+            <input id="input-search" type="text" placeholder="search vocalbulary now" required />
+          </label>
+        </div>
+        <button id="btn-search" class="btn btn-neutral join-item">Search</button>
+      </div>
+    </section>
+        <!-- search section close -->
+    <section id="spinner" class="flex justify-center items-center py-10 hidden">
+      <span class="loading loading-bars loading-xl"></span>
+    </section>
 
     <!-- word container -->
     <section
       id="word-container"
       class="bg-gray-100 p-10 w-11/12 mx-auto rounded-lg shadow-lg mb-10 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5"
     >
-
       <!-- By-default section -->
       <div
         class="text-center col-span-full space-y-5 bg-white shadow-2xl py-10 rounded-lg"
@@ -156,7 +166,7 @@
         <h3 class="text-4xl font-bold">একটি Lesson Select করুন।</h3>
       </div>
     </section>
-     
+
     <!-- Open the modal using ID.showModal() method -->
     <!-- <button class="btn" onclick="my_modal_5.showModal()">open modal</button> -->
     <dialog id="word_model" class="modal modal-bottom sm:modal-middle">
