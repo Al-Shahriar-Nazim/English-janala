@@ -1,9 +1,9 @@
-const createElement =(arr)=>{
-    // console.log(arr)
-    // [ 'hamim', 'sofik', 'kamal' ]
-    const htmlElement = arr.map(el => `<span class="btn">${el}</span>`)
-    return(htmlElement.join(" "))
-}
+const createElement = (arr) => {
+  // console.log(arr)
+  // [ 'hamim', 'sofik', 'kamal' ]
+  const htmlElement = arr.map((el) => `<span class="btn">${el}</span>`);
+  return htmlElement.join(" ");
+};
 
 const loadLessons = () => {
   fetch("https://openapi.programming-hero.com/api/levels/all")
@@ -36,12 +36,14 @@ const displayLessons = (lessons) => {
 
 const loadWords = (id) => {
   // console.log(id)
-  removeActive();
+
+  manageSpiner(true);
   const url = `https://openapi.programming-hero.com/api/level/${id}`;
   // console.log(url);
   fetch(url)
     .then((res) => res.json())
     .then((json) => {
+      removeActive();
       const clickBtn = document.getElementById(`lesson-btn-${id}`);
       // console.log(clickBtn)
       clickBtn.classList.add("active");
@@ -67,6 +69,7 @@ const displayLevelWords = (words) => {
         <h3 class="text-4xl font-bold">নেক্সট Lesson এ যান</h3>
       </div>
     `;
+    manageSpiner(false)
     return;
   }
 
@@ -95,6 +98,7 @@ const displayLevelWords = (words) => {
     //3. append the div to the container
     wordContainer.appendChild(wordDiv);
   }
+  manageSpiner(false);
 };
 const removeActive = () => {
   const lessonsButtons = document.querySelectorAll(".lesson-btn");
@@ -137,5 +141,15 @@ const displayWordDetails = (word) => {
           </div>
   `;
   document.getElementById("word_model").showModal();
+};
+
+const manageSpiner = (status) => {
+  if (status == true) {
+    document.getElementById("spinner").classList.remove("hidden");
+    document.getElementById("word-container").classList.add("hidden");
+  } else {
+    document.getElementById("word-container").classList.remove("hidden");
+    document.getElementById("spinner").classList.add("hidden");
+  }
 };
 loadLessons();
